@@ -257,8 +257,11 @@ h3 {
 }
 
 .outline-button:hover,
-.outline-button:focus-visible {
-  background: #f0a343;
+.outline-button:focus,
+.outline-button:focus-visible,
+.outline-button:active {
+  border-color: var(--green);
+  background: var(--green);
   color: #fff;
 }
 
