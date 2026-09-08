@@ -309,6 +309,8 @@ h3 {
   text-align: right;
 }
 
+.greeting-photo { display: none; }
+
 .medical { padding: 35px 0 175px; }
 .medical > .content > h2 { margin-bottom: 82px; }
 
@@ -465,4 +467,322 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .content.wide,
+  .content.medium,
+  .content.narrow {
+    width: calc(100% - 32px);
+  }
+
+  h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+
+  h3 {
+    margin-bottom: 16px;
+    font-size: 22px;
+    line-height: 1.4;
+  }
+
+  .site-header {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 14px 16px 12px;
+  }
+
+  .brand img { width: 150px; }
+
+  .site-header nav { width: 100%; }
+
+  .site-header nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3px 16px;
+    line-height: 1.35;
+  }
+
+  .site-header nav a {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .hero { height: 430px; }
+
+  .hero h1 {
+    top: 52%;
+    padding: 0 16px;
+    font-size: 36px;
+    line-height: 1.35;
+    letter-spacing: .08em;
+  }
+
+  .hours { padding: 72px 0 70px; }
+
+  .hours h2 {
+    margin-bottom: 22px;
+    font-size: 26px;
+  }
+
+  .hours-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hours-table {
+    min-width: 620px;
+    font-size: 14px;
+  }
+
+  .hours-table th,
+  .hours-table td {
+    padding: 7px 8px;
+  }
+
+  .hours-notes {
+    margin-top: 25px;
+    font-size: 14px;
+  }
+
+  .patient-gallery {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 42px;
+  }
+
+  .patient-gallery img {
+    height: 220px;
+    border-radius: 22px;
+  }
+
+  .news { padding: 62px 0 80px; }
+
+  .news-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: stretch;
+  }
+
+  .news-photo {
+    width: 100%;
+    height: 240px;
+    border-radius: 22px;
+  }
+
+  .news-body h2 {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .news-list a {
+    padding: 13px 0 11px;
+    font-size: 15px;
+  }
+
+  .news-button {
+    float: none;
+    display: block;
+    width: max-content;
+    margin: 22px auto 0;
+  }
+
+  .greeting { padding: 62px 0 84px; }
+
+  .greeting-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    background-image: none;
+    background-color: rgba(255, 253, 182, .98);
+  }
+
+  .greeting-photo {
+    display: block;
+    width: 100%;
+    height: 235px;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .greeting-copy {
+    width: 100%;
+    padding: 30px 22px 34px;
+  }
+
+  .greeting-copy h2 {
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .greeting-copy p {
+    margin-bottom: 22px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .greeting-copy .signature {
+    margin-top: 28px;
+    padding-right: 0;
+  }
+
+  .medical { padding: 32px 0 90px; }
+  .medical > .content > h2 { margin-bottom: 42px; }
+
+  .medical-row,
+  .medical-row.image-right {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: stretch;
+    margin-bottom: 58px;
+  }
+
+  .medical-row > img,
+  .medical-row .medical-photo-wrap {
+    order: -1;
+  }
+
+  .medical-row img {
+    width: 100%;
+    height: 220px;
+    border-radius: 22px;
+  }
+
+  .medical-row.image-right > div:first-child {
+    padding-left: 0;
+  }
+
+  .medical-row p {
+    max-width: none;
+    font-size: 15px;
+  }
+
+  .medical-photo-wrap { width: 100%; }
+  .medical-photo-wrap img { width: 100%; }
+  .medical-photo-wrap .small-button { margin-top: 12px; }
+
+  .about { padding: 70px 0 86px; }
+
+  .about-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    gap: 28px;
+    padding: 24px 20px 30px;
+    border-radius: 24px;
+  }
+
+  .about-card > img {
+    width: 100%;
+    height: 240px;
+    border-radius: 20px;
+  }
+
+  .about-copy h2 { text-align: center; }
+  .about-copy p {
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+
+  .about-copy .outline-button {
+    display: block;
+    float: none;
+    width: max-content;
+    margin: 0 auto;
+  }
+
+  .staff { padding: 42px 0 70px; }
+  .staff h2 { margin-bottom: 30px; }
+
+  .staff-intro {
+    margin-bottom: 48px;
+    font-size: 14px;
+  }
+
+  .staff-row,
+  .staff-row.image-right {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: stretch;
+    margin-bottom: 58px;
+  }
+
+  .staff-row > img {
+    order: -1;
+    width: 100%;
+    height: 260px;
+    border-radius: 22px;
+  }
+
+  .staff-row.image-right > div:first-child {
+    padding-left: 0;
+  }
+
+  .staff-row h3 { margin-bottom: 14px; }
+  .staff-row ul { padding-left: 1.25em; font-size: 14px; }
+
+  .access { padding: 66px 0 78px; }
+
+  .access-card { border-radius: 24px; }
+
+  .access-card > h2 {
+    padding: 22px 0 26px;
+    font-size: 28px;
+  }
+
+  .access-grid {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .access-grid > img {
+    width: 100%;
+    height: 220px;
+  }
+
+  .access-copy {
+    gap: 32px;
+    padding: 28px 20px 32px;
+  }
+
+  .access-copy h3 { margin-bottom: 14px; }
+  .access-copy ul { padding-left: 1.25em; font-size: 14px; }
+
+  .hours-bottom { padding: 58px 0 64px; }
+
+  .departments { padding: 46px 0 66px; }
+  .departments h2 { margin-bottom: 42px; }
+
+  .department-list {
+    margin-bottom: 48px;
+    font-size: 22px;
+  }
+
+  .contact-note { font-size: 14px; }
+
+  .back-to-top { margin-bottom: 28px; }
+  .site-footer { height: 68px; }
 }
