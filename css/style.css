@@ -15,7 +15,6 @@ html {
 
 body {
   margin: 0;
-  min-width: 1120px;
   color: var(--green);
   background: var(--paper);
   font-family: "Noto Sans JP", "Yu Gothic", YuGothic, Meiryo, sans-serif;
@@ -58,9 +57,15 @@ h3 {
   margin: 0 auto;
 }
 
-.content.wide { width: 1180px; }
-.content.medium { width: 960px; }
-.content.narrow { width: 1110px; }
+.content.wide,
+.content.medium,
+.content.narrow {
+  width: calc(100% - 48px);
+}
+
+.content.wide { max-width: 1180px; }
+.content.medium { max-width: 960px; }
+.content.narrow { max-width: 1110px; }
 
 .site-header {
   position: absolute;
@@ -283,7 +288,7 @@ h3 {
 }
 
 .greeting-copy {
-  width: 66%;
+  width: 52%;
   padding: 76px 20px 52px 56px;
 }
 
@@ -375,10 +380,10 @@ h3 {
   height: 330px;
 }
 
-.staff-row img[src*="sato_taro.jpg"] { object-position: center; }
+.staff-row img[src*="sato_taro.jpg"] { object-position: 75% center; }
 .staff-row img[src*="suzuki_mari.jpg"] { object-position: right center; }
 .staff-row img[src*="takahashi_yumi.jpg"] { object-position: 35% center; }
-.staff-row img[src*="yamamoto_hana.jpg"] { object-position: 28% center; }
+.staff-row img[src*="yamamoto_hana.jpg"] { object-position: left center; }
 
 .staff-row h3 { margin-bottom: 22px; }
 .staff-row ul { padding-left: 1.35em; font-size: 16px; }
