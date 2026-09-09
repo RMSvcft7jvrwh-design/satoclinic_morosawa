@@ -418,7 +418,7 @@ h3 {
 
 .access-card > h2 {
   margin: 0;
-  padding: 28px 0 58px;
+  padding: 46px 0 58px;
 }
 
 .access-grid {
@@ -763,7 +763,7 @@ h3 {
   .access-card { border-radius: 24px; }
 
   .access-card > h2 {
-    padding: 22px 0 26px;
+    padding: 38px 0 26px;
     font-size: 28px;
   }
 
