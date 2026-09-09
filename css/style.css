@@ -175,22 +175,41 @@ h3 {
 
 .hours-table {
   width: 100%;
-  border-collapse: collapse;
+  border: 1px solid rgba(101, 168, 158, .35);
+  border-radius: 14px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
   table-layout: fixed;
   font-size: 16px;
+  background: #fff;
 }
 
 .hours-table th,
 .hours-table td {
   height: 51px;
-  padding: 8px 10px;
-  border: 1.5px solid var(--line);
+  padding: 12px 10px;
+  border: 0;
+  border-bottom: 1px solid rgba(101, 168, 158, .32);
   text-align: center;
+}
+
+.hours-table thead th {
+  background: var(--section-tint);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.hours-table tbody tr:last-child th,
+.hours-table tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 .hours-table tr > :first-child { width: 160px; }
 .hours-table tbody th { font-weight: 600; }
 .hours-table td { font-size: 21px; }
+.hours-table td.is-open { color: var(--green); font-weight: 700; }
+.hours-table td.is-closed { color: #9aa8a5; }
 
 .hours-notes {
   margin-top: 35px;
@@ -568,7 +587,7 @@ h3 {
 
   .hours-table th,
   .hours-table td {
-    padding: 7px 8px;
+    padding: 10px 8px;
   }
 
   .hours-notes {
