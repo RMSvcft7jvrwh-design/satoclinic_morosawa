@@ -145,7 +145,7 @@ h3 {
 .header-phone {
   gap: 7px;
   padding: 8px 13px;
-  background: rgba(28, 132, 118, .70);
+  background: rgba(255, 255, 255, .12);
   color: #fff;
   font-size: 13px;
 }
@@ -162,7 +162,7 @@ h3 {
 
 .header-phone:hover,
 .header-phone:focus-visible {
-  background: rgba(28, 132, 118, .80);
+  background: rgba(28, 132, 118, .24);
 }
 
 .hero {
