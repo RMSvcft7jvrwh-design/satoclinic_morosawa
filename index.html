@@ -219,55 +219,6 @@
 
   <div class="back-to-top"><a class="outline-button" href="#top">トップに戻る</a></div>
   <footer class="site-footer"><small>©佐藤医院</small></footer>
-  <script>
-    const menuToggle = document.querySelector('.menu-toggle');
-    const siteHeader = document.querySelector('.site-header');
-    const mainNav = siteHeader.querySelector('nav');
-
-    menuToggle.addEventListener('click', () => {
-      const isOpen = siteHeader.classList.toggle('menu-open');
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    mainNav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        siteHeader.classList.remove('menu-open');
-        menuToggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    const switchers = [
-      { section: document.querySelector('.medical'), selector: '.medical-item' },
-      { section: document.querySelector('.staff'), selector: '.staff-item' }
-    ];
-
-    switchers.forEach(({ section, selector }) => {
-      const items = [...section.querySelectorAll(selector)];
-      const switcher = section.querySelector('.mobile-switcher');
-      const status = switcher.querySelector('.mobile-switcher-status');
-      let current = 0;
-
-      const showItem = (index) => {
-        current = (index + items.length) % items.length;
-        items.forEach((item, itemIndex) => {
-          const active = itemIndex === current;
-          item.classList.toggle('is-active', active);
-          item.toggleAttribute('open', window.innerWidth > 767 || active);
-        });
-        status.textContent = `${current + 1} / ${items.length}`;
-      };
-
-      switcher.querySelectorAll('button').forEach((button) => {
-        button.addEventListener('click', () => showItem(current + Number(button.dataset.step)));
-      });
-
-      showItem(0);
-      section._showItem = showItem;
-    });
-
-    window.addEventListener('resize', () => {
-      switchers.forEach(({ section }) => section._showItem(0));
-    });
-  </script>
+  <script src="./js/script.js" defer></script>
 </body>
 </html>
