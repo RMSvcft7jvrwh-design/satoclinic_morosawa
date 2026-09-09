@@ -105,6 +105,63 @@ h3 {
   color: #f1f8f5;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 24px;
+}
+
+.header-hours,
+.header-phone {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  border-radius: 6px;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+
+.header-hours {
+  gap: 8px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, .72);
+  font-size: 12px;
+}
+
+.header-action-label {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.header-action-detail {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.header-phone {
+  gap: 7px;
+  padding: 8px 13px;
+  background: var(--green-bright);
+  color: #fff;
+  font-size: 13px;
+}
+
+.header-phone strong {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.header-hours:hover,
+.header-hours:focus-visible {
+  background: rgba(241, 248, 245, .16);
+}
+
+.header-phone:hover,
+.header-phone:focus-visible {
+  background: var(--green);
+}
+
 .hero {
   position: relative;
   height: 824px;
@@ -555,6 +612,33 @@ h3 {
   .site-header nav a {
     font-size: 13px;
     white-space: nowrap;
+  }
+
+  .header-actions {
+    gap: 8px;
+    margin: 0;
+  }
+
+  .header-hours,
+  .header-phone {
+    min-height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .header-hours::before {
+    content: "◷";
+    font-size: 15px;
+  }
+
+  .header-phone::before {
+    content: "☎";
+    font-size: 14px;
+  }
+
+  .header-action-detail,
+  .header-phone strong {
+    display: none;
   }
 
   .hero { height: 430px; }
