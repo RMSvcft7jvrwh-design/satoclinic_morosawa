@@ -165,6 +165,11 @@ h3 {
   background: rgba(28, 132, 118, .24);
 }
 
+.menu-toggle,
+.sr-only {
+  display: none;
+}
+
 .hero {
   position: relative;
   height: 824px;
@@ -336,9 +341,12 @@ h3 {
 .news-list a:focus-visible { padding-left: 10px; }
 
 .outline-button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 112px;
-  padding: 4px 18px 5px;
+  min-height: 48px;
+  padding: 12px 18px;
   border: 2px solid var(--green-bright);
   border-radius: 6px;
   background: rgba(255, 255, 255, .58);
@@ -412,6 +420,16 @@ h3 {
   gap: 110px;
   align-items: center;
   margin-bottom: 96px;
+}
+
+.medical-carousel,
+.staff-carousel {
+  display: contents;
+}
+
+.medical-item > summary,
+.staff-item > summary {
+  display: none;
 }
 
 .medical-row.image-right,
@@ -596,41 +614,104 @@ h3 {
   .site-header {
     position: absolute;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
     padding: 14px 16px 12px;
   }
 
   .brand img { width: 150px; }
 
-  .site-header nav { width: 100%; }
+  .site-header nav {
+    position: absolute;
+    top: 100%;
+    right: 16px;
+    left: 16px;
+    display: none;
+    width: auto;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 10px;
+    background: rgba(37, 111, 102, .96);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .site-header.menu-open nav { display: block; }
 
   .site-header nav ul {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3px 16px;
+    flex-direction: column;
+    gap: 0;
     line-height: 1.35;
   }
 
+  .site-header nav li + li { border-top: 1px solid rgba(255, 255, 255, .18); }
+
   .site-header nav a {
-    font-size: 13px;
+    display: block;
+    padding: 8px 10px;
+    font-size: 14px;
     white-space: nowrap;
   }
 
+  .menu-toggle {
+    display: flex;
+    order: 3;
+    flex: 0 0 42px;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .42);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .menu-toggle span:not(.sr-only) {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+  }
+
+  .menu-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .site-header.menu-open .menu-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .site-header.menu-open .menu-toggle span:nth-child(2) { opacity: 0; }
+  .site-header.menu-open .menu-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .header-actions {
+    order: 2;
     gap: 8px;
     margin: 0;
   }
 
-  .header-hours,
   .header-phone {
     min-height: 30px;
     padding: 5px 10px;
     font-size: 12px;
   }
+
+  .header-hours { display: none; }
 
   .header-hours::before {
     content: "◷";
@@ -658,6 +739,7 @@ h3 {
   }
 
   .hours { padding: 64px 0 56px; }
+  .hours { scroll-margin-top: 72px; }
 
   .hours h2 {
     margin-bottom: 22px;
@@ -686,14 +768,25 @@ h3 {
   }
 
   .patient-gallery {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    display: flex;
+    gap: 16px;
     margin-top: 36px;
+    margin-right: -16px;
+    padding-right: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
 
+  .patient-gallery::-webkit-scrollbar,
+  .medical-carousel::-webkit-scrollbar,
+  .staff-carousel::-webkit-scrollbar { display: none; }
+
   .patient-gallery img {
+    flex: 0 0 calc(100% - 16px);
     height: 220px;
     border-radius: 22px;
+    scroll-snap-align: start;
   }
 
   .news { padding: 56px 0 64px; }
@@ -771,13 +864,114 @@ h3 {
   .medical { padding: 56px 0 72px; }
   .medical > .content > h2 { margin-bottom: 42px; }
 
+  .medical-carousel,
+  .staff-carousel {
+    display: block;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .medical-item,
+  .staff-item {
+    display: block;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(101, 168, 158, .55);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .medical-item:last-child,
+  .staff-item:last-child { margin-bottom: 0; }
+
+  .medical-item > summary,
+  .staff-item > summary {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) 20px;
+    gap: 12px;
+    align-items: center;
+    min-height: 86px;
+    padding: 10px 12px;
+    color: var(--green);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .medical-item > summary::-webkit-details-marker,
+  .staff-item > summary::-webkit-details-marker { display: none; }
+
+  .medical-item > summary::after,
+  .staff-item > summary::after {
+    content: "+";
+    grid-column: 3;
+    color: var(--green-bright);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .medical-item[open] > summary::after,
+  .staff-item[open] > summary::after { content: "−"; }
+
+  .medical-item > summary img,
+  .staff-item > summary img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .medical-item > summary > span,
+  .staff-item > summary > span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .medical-item > summary strong,
+  .staff-item > summary strong {
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .medical-item > summary small,
+  .staff-item > summary small {
+    overflow: hidden;
+    color: rgba(37, 111, 102, .78);
+    font-size: 12px;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .medical-item:not([open]) > .medical-row,
+  .staff-item:not([open]) > .staff-row { display: none; }
+
+  .medical-item[open] > .medical-row,
+  .staff-item[open] > .staff-row {
+    padding: 0 12px 16px;
+  }
+
+  .staff-item summary img[src*="sato_taro.jpg"] { object-position: 75% center; }
+  .staff-item summary img[src*="suzuki_mari.jpg"] { object-position: right center; }
+  .staff-item summary img[src*="takahashi_yumi.jpg"] { object-position: 35% center; }
+  .staff-item summary img[src*="yamamoto_hana.jpg"] { object-position: left center; }
+
   .medical-row,
   .medical-row.image-right {
     display: flex;
     flex-direction: column;
     gap: 22px;
     align-items: stretch;
-    margin-bottom: 52px;
+    flex: 0 0 calc(100% - 16px);
+    margin-bottom: 0;
+    scroll-snap-align: start;
   }
 
   .medical-row > img,
@@ -802,7 +996,8 @@ h3 {
 
   .medical-photo-wrap { width: 100%; }
   .medical-photo-wrap img { width: 100%; }
-  .medical-photo-wrap .small-button { margin-top: 12px; }
+  .medical-row.last .medical-photo-wrap { text-align: center; }
+  .medical-photo-wrap .small-button { margin-top: 20px; }
 
   .about { padding: 56px 0 72px; }
 
@@ -849,7 +1044,9 @@ h3 {
     flex-direction: column;
     gap: 22px;
     align-items: stretch;
-    margin-bottom: 52px;
+    flex: 0 0 calc(100% - 16px);
+    margin-bottom: 0;
+    scroll-snap-align: start;
   }
 
   .staff-row > img {
