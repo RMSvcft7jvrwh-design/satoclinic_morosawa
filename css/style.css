@@ -427,6 +427,11 @@ h3 {
   display: contents;
 }
 
+.medical-more {
+  margin-top: 28px;
+  text-align: center;
+}
+
 .medical-item,
 .staff-item {
   display: contents;
