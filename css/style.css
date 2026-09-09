@@ -83,7 +83,7 @@ h3 {
 
 .brand img {
   width: 190px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .30));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .40));
 }
 
 .site-header nav ul {
@@ -97,7 +97,7 @@ h3 {
 .site-header nav a {
   font-size: 18px;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .60), 0 2px 6px rgba(0, 0, 0, .25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .72), 0 2px 6px rgba(0, 0, 0, .34);
 }
 
 .site-header nav a:hover,
@@ -115,6 +115,11 @@ h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .hero { height: 750px; }
+  .hero > img { object-position: center top; }
 }
 
 .hero-shade {
@@ -135,7 +140,7 @@ h3 {
   font-weight: 400;
   letter-spacing: .11em;
   text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .65), 0 3px 10px rgba(0, 0, 0, .35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .78), 0 3px 10px rgba(0, 0, 0, .44);
 }
 
 .patterned-content {
@@ -160,7 +165,7 @@ h3 {
 .section-block { position: relative; }
 
 .hours {
-  padding: 176px 0 118px;
+  padding: 144px 0 96px;
 }
 
 .hours h2 {
@@ -200,7 +205,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 65px;
-  margin-top: 88px;
+  margin-top: 72px;
 }
 
 .patient-gallery img {
@@ -211,19 +216,19 @@ h3 {
 }
 
 .news {
-  padding: 70px 0 150px;
+  padding: 88px 0 112px;
   background: var(--section-tint);
 }
 
 .news-layout {
   display: grid;
-  grid-template-columns: 345px 1fr;
-  gap: 145px;
+  grid-template-columns: 380px 1fr;
+  gap: 110px;
   align-items: center;
 }
 
 .news-photo {
-  width: 345px;
+  width: 380px;
   height: 570px;
   border-radius: 26px;
   object-fit: cover;
@@ -277,7 +282,7 @@ h3 {
   margin-top: 25px;
 }
 
-.greeting { padding: 60px 0 145px; }
+.greeting { padding: 88px 0 120px; }
 
 .greeting-card {
   min-height: 745px;
@@ -295,7 +300,7 @@ h3 {
 }
 
 .greeting-copy h2 {
-  margin-bottom: 48px;
+  margin-bottom: 40px;
   text-align: left;
 }
 
@@ -315,8 +320,8 @@ h3 {
 
 .greeting-photo { display: none; }
 
-.medical { padding: 35px 0 175px; }
-.medical > .content > h2 { margin-bottom: 82px; }
+.medical { padding: 96px 0 120px; }
+.medical > .content > h2 { margin-bottom: 64px; }
 
 .medical-row,
 .staff-row {
@@ -324,7 +329,7 @@ h3 {
   grid-template-columns: 340px 1fr;
   gap: 110px;
   align-items: center;
-  margin-bottom: 116px;
+  margin-bottom: 96px;
 }
 
 .medical-row.image-right,
@@ -346,7 +351,7 @@ h3 {
 .medical-photo-wrap .small-button { margin-top: 14px; }
 
 .about {
-  padding: 100px 0 130px;
+  padding: 96px 0 120px;
   background: var(--section-tint);
 }
 
@@ -369,20 +374,20 @@ h3 {
 }
 
 .about-copy h2 { text-align: left; }
-.about-copy p { margin-bottom: 80px; font-size: 17px; }
+.about-copy p { margin-bottom: 56px; font-size: 17px; }
 .about-copy .outline-button { float: right; margin-right: 65px; }
 
-.staff { padding: 65px 0 80px; }
-.staff h2 { margin-bottom: 55px; }
+.staff { padding: 96px 0 104px; }
+.staff h2 { margin-bottom: 44px; }
 
 .staff-intro {
-  margin: 0 auto 92px;
+  margin: 0 auto 68px;
   font-size: 17px;
   text-align: center;
 }
 
 .staff-row {
-  margin-bottom: 102px;
+  margin-bottom: 88px;
 }
 
 .staff-row img {
@@ -400,7 +405,7 @@ h3 {
 .staff-row.last { margin-bottom: 0; }
 
 .access {
-  padding: 80px 0 100px;
+  padding: 96px 0 112px;
   background: var(--section-tint);
 }
 
@@ -439,14 +444,14 @@ h3 {
 .access-copy h3 { margin-bottom: 18px; }
 .access-copy ul { margin-bottom: 0; padding-left: 0; font-size: 16px; list-style: none; }
 
-.hours-bottom { padding: 72px 0 78px; }
+.hours-bottom { padding: 96px 0; }
 .hours-bottom .hours-notes { margin-top: 30px; }
 
-.departments { padding: 55px 0 85px; }
-.departments h2 { margin-bottom: 105px; }
+.departments { padding: 96px 0 104px; }
+.departments h2 { margin-bottom: 72px; }
 
 .department-list {
-  margin-bottom: 90px;
+  margin-bottom: 72px;
   font-size: 27px;
   font-weight: 700;
   line-height: 1.45;
@@ -544,7 +549,7 @@ h3 {
     letter-spacing: .08em;
   }
 
-  .hours { padding: 72px 0 70px; }
+  .hours { padding: 64px 0 56px; }
 
   .hours h2 {
     margin-bottom: 22px;
@@ -575,7 +580,7 @@ h3 {
   .patient-gallery {
     grid-template-columns: 1fr;
     gap: 18px;
-    margin-top: 42px;
+    margin-top: 36px;
   }
 
   .patient-gallery img {
@@ -583,7 +588,7 @@ h3 {
     border-radius: 22px;
   }
 
-  .news { padding: 62px 0 80px; }
+  .news { padding: 56px 0 64px; }
 
   .news-layout {
     display: flex;
@@ -615,7 +620,7 @@ h3 {
     margin: 22px auto 0;
   }
 
-  .greeting { padding: 62px 0 84px; }
+  .greeting { padding: 56px 0 72px; }
 
   .greeting-card {
     display: flex;
@@ -655,7 +660,7 @@ h3 {
     padding-right: 0;
   }
 
-  .medical { padding: 32px 0 90px; }
+  .medical { padding: 56px 0 72px; }
   .medical > .content > h2 { margin-bottom: 42px; }
 
   .medical-row,
@@ -664,7 +669,7 @@ h3 {
     flex-direction: column;
     gap: 22px;
     align-items: stretch;
-    margin-bottom: 58px;
+    margin-bottom: 52px;
   }
 
   .medical-row > img,
@@ -691,7 +696,7 @@ h3 {
   .medical-photo-wrap img { width: 100%; }
   .medical-photo-wrap .small-button { margin-top: 12px; }
 
-  .about { padding: 70px 0 86px; }
+  .about { padding: 56px 0 72px; }
 
   .about-card {
     display: flex;
@@ -722,11 +727,11 @@ h3 {
     margin: 0 auto;
   }
 
-  .staff { padding: 42px 0 70px; }
+  .staff { padding: 56px 0 64px; }
   .staff h2 { margin-bottom: 30px; }
 
   .staff-intro {
-    margin-bottom: 48px;
+    margin-bottom: 36px;
     font-size: 14px;
   }
 
@@ -736,7 +741,7 @@ h3 {
     flex-direction: column;
     gap: 22px;
     align-items: stretch;
-    margin-bottom: 58px;
+    margin-bottom: 52px;
   }
 
   .staff-row > img {
@@ -753,7 +758,7 @@ h3 {
   .staff-row h3 { margin-bottom: 14px; }
   .staff-row ul { padding-left: 1.25em; font-size: 14px; }
 
-  .access { padding: 66px 0 78px; }
+  .access { padding: 56px 0 64px; }
 
   .access-card { border-radius: 24px; }
 
@@ -781,13 +786,13 @@ h3 {
   .access-copy h3 { margin-bottom: 14px; }
   .access-copy ul { padding-left: 0; font-size: 14px; }
 
-  .hours-bottom { padding: 58px 0 64px; }
+  .hours-bottom { padding: 52px 0 56px; }
 
-  .departments { padding: 46px 0 66px; }
+  .departments { padding: 52px 0 60px; }
   .departments h2 { margin-bottom: 42px; }
 
   .department-list {
-    margin-bottom: 48px;
+    margin-bottom: 40px;
     font-size: 22px;
   }
 
