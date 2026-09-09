@@ -427,6 +427,11 @@ h3 {
   display: contents;
 }
 
+.medical-item,
+.staff-item {
+  display: contents;
+}
+
 .medical-item > summary,
 .staff-item > summary,
 .mobile-switcher {

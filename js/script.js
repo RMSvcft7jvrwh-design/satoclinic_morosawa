@@ -55,7 +55,9 @@
       });
 
       if (status) {
-        status.textContent = (currentIndex + 1) + ' / ' + items.length;
+        status.textContent = items.map(function (_, itemIndex) {
+          return itemIndex === currentIndex ? '●' : '○';
+        }).join(' ');
       }
     };
 
