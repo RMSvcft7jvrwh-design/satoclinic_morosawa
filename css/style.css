@@ -1,10 +1,11 @@
 @charset "UTF-8";
 
 :root {
-  --paper: #fffb87;
+  --paper: #fff;
+  --section-tint: #f1f8f5;
   --green: #256f66;
-  --green-bright: #168a49;
-  --line: rgba(37, 111, 102, .78);
+  --green-bright: #2e8b7f;
+  --line: #65a89e;
 }
 
 * { box-sizing: border-box; }
@@ -82,7 +83,7 @@ h3 {
 
 .brand img {
   width: 190px;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .30));
 }
 
 .site-header nav ul {
@@ -96,12 +97,12 @@ h3 {
 .site-header nav a {
   font-size: 18px;
   font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, .42);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .60), 0 2px 6px rgba(0, 0, 0, .25);
 }
 
 .site-header nav a:hover,
 .site-header nav a:focus-visible {
-  color: #fffdb0;
+  color: #f1f8f5;
 }
 
 .hero {
@@ -119,7 +120,7 @@ h3 {
 .hero-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 30, 20, .18), transparent 34%, rgba(0, 0, 0, .04));
+  background: linear-gradient(180deg, rgba(37, 111, 102, .35) 0%, transparent 38%, transparent 70%, rgba(37, 111, 102, .25) 100%);
 }
 
 .hero h1 {
@@ -128,13 +129,13 @@ h3 {
   left: 0;
   width: 100%;
   margin: 0;
-  color: rgba(255, 255, 255, .9);
+  color: #fff;
   font-family: "Zen Kurenaido", sans-serif;
   font-size: 66px;
   font-weight: 400;
   letter-spacing: .11em;
   text-align: center;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, .1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .65), 0 3px 10px rgba(0, 0, 0, .35);
 }
 
 .patterned-content {
@@ -152,7 +153,7 @@ h3 {
   background-image: url("../assets/Logo/logo 3.png");
   background-position: 20px 20px;
   background-size: 250px 170px;
-  opacity: .12;
+  opacity: .10;
   pointer-events: none;
 }
 
@@ -211,6 +212,7 @@ h3 {
 
 .news {
   padding: 70px 0 150px;
+  background: var(--section-tint);
 }
 
 .news-layout {
@@ -238,7 +240,7 @@ h3 {
   list-style: none;
 }
 
-.news-list li { border-bottom: 1.5px solid var(--green); }
+.news-list li { border-bottom: 1.5px solid var(--line); }
 .news-list a {
   display: block;
   padding: 22px 0 17px;
@@ -253,7 +255,7 @@ h3 {
   display: inline-block;
   min-width: 112px;
   padding: 4px 18px 5px;
-  border: 2px solid #f0a343;
+  border: 2px solid var(--green-bright);
   border-radius: 6px;
   font-size: 14px;
   font-weight: 700;
@@ -265,8 +267,8 @@ h3 {
 .outline-button:focus,
 .outline-button:focus-visible,
 .outline-button:active {
-  border-color: var(--green);
-  background: var(--green);
+  border-color: var(--green-bright);
+  background: var(--green-bright);
   color: #fff;
 }
 
@@ -280,9 +282,9 @@ h3 {
 .greeting-card {
   min-height: 745px;
   overflow: hidden;
-  border: 2px solid var(--green);
+  border: 2px solid var(--line);
   border-radius: 38px;
-  background-image: linear-gradient(90deg, rgba(255, 253, 182, .98) 0%, rgba(255, 253, 182, .93) 40%, rgba(255, 253, 182, .32) 69%, rgba(255, 253, 182, .08) 100%), url("../assets/Doctor_Image/firstView.jpg");
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, .98) 0%, rgba(255, 255, 255, .95) 48%, rgba(255, 255, 255, 0) 58%), url("../assets/Doctor_Image/firstView.jpg");
   background-position: center, center;
   background-size: cover;
 }
@@ -300,7 +302,9 @@ h3 {
 .greeting-copy p {
   margin-bottom: 27px;
   font-size: 16px;
+  font-weight: 600;
   line-height: 1.7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .12);
 }
 
 .greeting-copy .signature {
@@ -341,7 +345,10 @@ h3 {
 .medical-photo-wrap { text-align: right; }
 .medical-photo-wrap .small-button { margin-top: 14px; }
 
-.about { padding: 100px 0 130px; }
+.about {
+  padding: 100px 0 130px;
+  background: var(--section-tint);
+}
 
 .about-card {
   display: grid;
@@ -350,7 +357,7 @@ h3 {
   align-items: center;
   min-height: 650px;
   padding: 80px 90px;
-  border: 2px solid var(--green);
+  border: 2px solid var(--line);
   border-radius: 30px;
 }
 
@@ -392,12 +399,15 @@ h3 {
 .staff-row.image-right > div:first-child { padding-left: 90px; }
 .staff-row.last { margin-bottom: 0; }
 
-.access { padding: 80px 0 100px; }
+.access {
+  padding: 80px 0 100px;
+  background: var(--section-tint);
+}
 
 .access-card {
   overflow: hidden;
   padding-top: 0;
-  border: 2px solid var(--green);
+  border: 2px solid var(--line);
   border-radius: 30px;
 }
 
@@ -427,7 +437,7 @@ h3 {
 }
 
 .access-copy h3 { margin-bottom: 18px; }
-.access-copy ul { margin-bottom: 0; padding-left: 1.35em; font-size: 16px; }
+.access-copy ul { margin-bottom: 0; padding-left: 0; font-size: 16px; list-style: none; }
 
 .hours-bottom { padding: 72px 0 78px; }
 .hours-bottom .hours-notes { margin-top: 30px; }
@@ -613,7 +623,7 @@ h3 {
     min-height: 0;
     overflow: hidden;
     background-image: none;
-    background-color: rgba(255, 253, 182, .98);
+    background-color: #fff;
   }
 
   .greeting-photo {
@@ -769,7 +779,7 @@ h3 {
   }
 
   .access-copy h3 { margin-bottom: 14px; }
-  .access-copy ul { padding-left: 1.25em; font-size: 14px; }
+  .access-copy ul { padding-left: 0; font-size: 14px; }
 
   .hours-bottom { padding: 58px 0 64px; }
 
