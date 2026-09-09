@@ -920,6 +920,7 @@ h3 {
     margin: 0;
     padding: 0;
     overflow: visible;
+    touch-action: pan-y;
   }
 
   .mobile-switcher {
@@ -964,7 +965,15 @@ h3 {
   }
 
   .medical-item.is-active,
-  .staff-item.is-active { display: block; }
+  .staff-item.is-active {
+    display: block;
+    animation: carousel-card-in .22s ease-out;
+  }
+
+  @keyframes carousel-card-in {
+    from { opacity: .72; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
 
   .medical-item > summary,
   .staff-item > summary {

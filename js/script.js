@@ -31,11 +31,16 @@
 
     const items = Array.from(section.querySelectorAll(itemSelector));
     const switcher = section.querySelector('.mobile-switcher');
-    if (!items.length || !switcher) return null;
+    const carousel = section.querySelector('.medical-carousel, .staff-carousel');
+    if (!items.length || !switcher || !carousel) return null;
 
     const status = switcher.querySelector('.mobile-switcher-status');
     const buttons = switcher.querySelectorAll('button[data-step]');
     let currentIndex = 0;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerTracking = false;
+    let suppressClick = false;
 
     const showItem = function (index) {
       if (!items.length) return;
@@ -66,6 +71,41 @@
         const step = Number(button.dataset.step);
         showItem(currentIndex + (Number.isFinite(step) ? step : 0));
       });
+    });
+
+    carousel.addEventListener('pointerdown', function (event) {
+      if (window.innerWidth > MOBILE_BREAKPOINT || event.target.closest('button')) return;
+
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      pointerTracking = true;
+
+      if (carousel.setPointerCapture) {
+        carousel.setPointerCapture(event.pointerId);
+      }
+    });
+
+    carousel.addEventListener('pointerup', function (event) {
+      if (!pointerTracking) return;
+
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+      pointerTracking = false;
+
+      if (Math.abs(deltaX) < 50 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+      suppressClick = true;
+      showItem(currentIndex + (deltaX < 0 ? 1 : -1));
+    });
+
+    carousel.addEventListener('click', function (event) {
+      if (!suppressClick) return;
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClick = false;
+    });
+
+    carousel.addEventListener('pointercancel', function () {
+      pointerTracking = false;
     });
 
     showItem(0);
