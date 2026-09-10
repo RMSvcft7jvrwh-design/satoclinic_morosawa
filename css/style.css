@@ -229,6 +229,103 @@ h3 {
 
 .section-block { position: relative; }
 
+.subpage-hero {
+  position: relative;
+  display: flex;
+  min-height: 390px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 130px 24px 70px;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(135deg, #2f8278 0%, #65a89e 100%);
+  text-align: center;
+}
+
+.subpage-hero::before {
+  position: absolute;
+  inset: -30px;
+  content: "";
+  background: url("../assets/Logo/logo 3.png") center / 380px auto repeat;
+  opacity: .10;
+}
+
+.subpage-hero-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(37, 111, 102, .16);
+}
+
+.subpage-hero h1,
+.subpage-hero p { position: relative; z-index: 1; }
+
+.subpage-hero h1 {
+  margin: 0;
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: 58px;
+  font-weight: 400;
+  letter-spacing: .12em;
+  line-height: 1.3;
+}
+
+.subpage-hero p {
+  margin: 18px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+
+.medical-detail { padding: 112px 0 128px; }
+
+.medical-detail h2 { margin-bottom: 62px; }
+
+.medical-detail-list {
+  display: grid;
+  gap: 44px;
+}
+
+.medical-detail-card {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 52px;
+  align-items: center;
+  padding: 34px 46px 34px 34px;
+  border: 1px solid rgba(101, 168, 158, .55);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .94);
+}
+
+.medical-detail-card:nth-child(even) { background: var(--section-tint); }
+
+.medical-detail-card > img {
+  width: 300px;
+  height: 230px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.medical-detail-card-body { position: relative; }
+
+.medical-detail-number {
+  margin: 0 0 4px;
+  color: var(--green-bright);
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.medical-detail-card h3 {
+  margin-bottom: 20px;
+  font-size: 27px;
+}
+
+.medical-detail-card-body > p:last-child {
+  margin-bottom: 0;
+  font-size: 17px;
+  line-height: 2;
+}
+
 .hours {
   padding: 144px 0 96px;
 }
@@ -910,6 +1007,36 @@ h3 {
     margin-top: 28px;
     padding-right: 0;
   }
+
+  .subpage-hero {
+    min-height: 300px;
+    padding: 116px 20px 52px;
+  }
+
+  .subpage-hero h1 { font-size: 42px; }
+  .subpage-hero p { margin-top: 12px; font-size: 14px; }
+
+  .medical-detail { padding: 64px 0 76px; }
+  .medical-detail h2 { margin-bottom: 34px; font-size: 28px; }
+
+  .medical-detail-list { gap: 24px; }
+
+  .medical-detail-card {
+    display: block;
+    padding: 16px 16px 24px;
+    border-radius: 18px;
+  }
+
+  .medical-detail-card > img {
+    width: 100%;
+    height: 190px;
+    margin-bottom: 22px;
+    border-radius: 14px;
+  }
+
+  .medical-detail-number { font-size: 26px; }
+  .medical-detail-card h3 { margin-bottom: 14px; font-size: 22px; }
+  .medical-detail-card-body > p:last-child { font-size: 15px; line-height: 1.9; }
 
   .medical { padding: 56px 0 72px; }
   .medical > .content > h2 { margin-bottom: 42px; }
