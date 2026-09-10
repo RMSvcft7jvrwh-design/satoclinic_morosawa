@@ -229,7 +229,21 @@
     const pageNumbers = pagination.querySelector('[data-news-pages]');
     const previousButton = pagination.querySelector('[data-news-prev]');
     const nextButton = pagination.querySelector('[data-news-next]');
+    const mobilePrevious = newsPage.querySelector('[data-news-mobile-prev]');
+    const mobileNext = newsPage.querySelector('[data-news-mobile-next]');
+    const mobileStatus = newsPage.querySelector('[data-news-mobile-status]');
+    const articleViewport = newsPage.querySelector('.news-articles');
     let currentPage = 0;
+    let mobileIndex = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragDeltaX = 0;
+    let isDragging = false;
+    let isHorizontalDrag = false;
+
+    function isMobile() {
+      return window.innerWidth <= 767;
+    }
 
     function getHashArticle() {
       const id = window.location.hash.slice(1);
@@ -241,10 +255,14 @@
       const start = currentPage * pageSize;
       const end = start + pageSize;
       const target = getHashArticle();
+      const mobile = isMobile();
+      const targetIndex = target ? articles.indexOf(target) : -1;
+      mobileIndex = targetIndex >= start && targetIndex < end ? targetIndex - start : 0;
+      newsPage.classList.toggle('news-mobile-ready', mobile);
 
       articles.forEach(function (article, index) {
         article.hidden = index < start || index >= end;
-        article.open = article === target && !article.hidden;
+        article.open = mobile ? !article.hidden : article === target && !article.hidden;
       });
 
       pageNumbers.replaceChildren();
@@ -267,6 +285,12 @@
       nextButton.disabled = currentPage === pageCount - 1;
       pagination.hidden = pageCount <= 1;
 
+      if (mobile) {
+        updateMobileCarousel(false);
+      } else {
+        resetMobileCarousel();
+      }
+
       if (shouldScroll) {
         newsPage.scrollIntoView({ block: 'start' });
       }
@@ -278,6 +302,115 @@
 
     nextButton.addEventListener('click', function () {
       if (currentPage < pageCount - 1) renderPage(currentPage + 1, true);
+    });
+
+    function updateMobileCarousel(animate) {
+      if (!isMobile()) return;
+
+      const start = currentPage * pageSize;
+      const end = Math.min(start + pageSize, articles.length);
+      const visibleArticles = articles.slice(start, end);
+      const activeArticle = visibleArticles[mobileIndex];
+      if (!activeArticle) return;
+
+      visibleArticles.forEach(function (article, index) {
+        article.classList.toggle('is-mobile-active', index === mobileIndex);
+        article.style.transition = animate ? 'transform 360ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+        article.style.transform = 'translate3d(' + ((index - mobileIndex) * 100) + '%, 0, 0)';
+      });
+
+      articleViewport.style.height = activeArticle.offsetHeight + 'px';
+      mobileStatus.textContent = (mobileIndex + 1) + ' / ' + visibleArticles.length;
+      mobilePrevious.disabled = mobileIndex === 0;
+      mobileNext.disabled = mobileIndex === visibleArticles.length - 1;
+    }
+
+    function resetMobileCarousel() {
+      articleViewport.style.height = '';
+      articles.forEach(function (article) {
+        article.classList.remove('is-mobile-active');
+        article.style.transition = '';
+        article.style.transform = '';
+      });
+    }
+
+    function moveMobileCarousel(index, animate) {
+      const start = currentPage * pageSize;
+      const count = Math.min(pageSize, articles.length - start);
+      mobileIndex = Math.max(0, Math.min(index, count - 1));
+      updateMobileCarousel(animate);
+    }
+
+    mobilePrevious.addEventListener('click', function () {
+      moveMobileCarousel(mobileIndex - 1, true);
+    });
+
+    mobileNext.addEventListener('click', function () {
+      moveMobileCarousel(mobileIndex + 1, true);
+    });
+
+    articleViewport.addEventListener('pointerdown', function (event) {
+      if (!isMobile() || event.pointerType === 'mouse' && event.button !== 0) return;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragDeltaX = 0;
+      isDragging = true;
+      isHorizontalDrag = false;
+      articleViewport.setPointerCapture(event.pointerId);
+    });
+
+    articleViewport.addEventListener('pointermove', function (event) {
+      if (!isDragging || !isMobile()) return;
+
+      const deltaX = event.clientX - dragStartX;
+      const deltaY = event.clientY - dragStartY;
+      if (!isHorizontalDrag && Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8) return;
+      if (!isHorizontalDrag && Math.abs(deltaY) > Math.abs(deltaX)) {
+        isDragging = false;
+        return;
+      }
+
+      isHorizontalDrag = true;
+      event.preventDefault();
+      dragDeltaX = deltaX;
+      const start = currentPage * pageSize;
+      const count = Math.min(pageSize, articles.length - start);
+      const atStart = mobileIndex === 0 && deltaX > 0;
+      const atEnd = mobileIndex === count - 1 && deltaX < 0;
+      const resistance = atStart || atEnd ? 0.35 : 1;
+
+      articles.slice(start, start + count).forEach(function (article, index) {
+        article.style.transition = 'none';
+        article.style.transform = 'translate3d(calc(' + ((index - mobileIndex) * 100) + '% + ' + (deltaX * resistance) + 'px), 0, 0)';
+      });
+    });
+
+    function finishMobileDrag() {
+      if (!isDragging) return;
+      isDragging = false;
+      if (!isHorizontalDrag) return;
+
+      const threshold = articleViewport.clientWidth * 0.18;
+      const nextIndex = Math.abs(dragDeltaX) >= threshold
+        ? mobileIndex + (dragDeltaX < 0 ? 1 : -1)
+        : mobileIndex;
+      moveMobileCarousel(nextIndex, true);
+      dragDeltaX = 0;
+      isHorizontalDrag = false;
+    }
+
+    articleViewport.addEventListener('pointerup', finishMobileDrag);
+    articleViewport.addEventListener('pointercancel', finishMobileDrag);
+
+    window.addEventListener('resize', function () {
+      if (isMobile()) {
+        articles.forEach(function (article, index) {
+          article.open = index >= currentPage * pageSize && index < (currentPage + 1) * pageSize;
+        });
+        updateMobileCarousel(false);
+      } else {
+        renderPage(currentPage, false);
+      }
     });
 
     function renderHashTarget() {
