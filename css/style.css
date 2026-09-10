@@ -919,8 +919,15 @@ h3 {
     display: block;
     margin: 0;
     padding: 0;
-    overflow: visible;
+    overflow: hidden;
     touch-action: pan-y;
+  }
+
+  .carousel-track {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    will-change: transform;
   }
 
   .mobile-switcher {
@@ -956,7 +963,9 @@ h3 {
 
   .medical-item,
   .staff-item {
-    display: none;
+    display: block;
+    flex: 0 0 100%;
+    width: 100%;
     margin-bottom: 12px;
     overflow: hidden;
     border: 1px solid rgba(101, 168, 158, .55);
@@ -967,12 +976,6 @@ h3 {
   .medical-item.is-active,
   .staff-item.is-active {
     display: block;
-    animation: carousel-card-in .22s ease-out;
-  }
-
-  @keyframes carousel-card-in {
-    from { opacity: .72; transform: translateX(10px); }
-    to { opacity: 1; transform: translateX(0); }
   }
 
   .medical-item > summary,

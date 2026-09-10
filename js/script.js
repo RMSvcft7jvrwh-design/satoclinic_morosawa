@@ -32,7 +32,8 @@
     const items = Array.from(section.querySelectorAll(itemSelector));
     const switcher = section.querySelector('.mobile-switcher');
     const carousel = section.querySelector('.medical-carousel, .staff-carousel');
-    if (!items.length || !switcher || !carousel) return null;
+    const track = carousel ? carousel.querySelector('.carousel-track') : null;
+    if (!items.length || !switcher || !carousel || !track) return null;
 
     const status = switcher.querySelector('.mobile-switcher-status');
     const buttons = switcher.querySelectorAll('button[data-step]');
@@ -40,9 +41,18 @@
     let pointerStartX = 0;
     let pointerStartY = 0;
     let pointerTracking = false;
+    let horizontalDrag = false;
+    let pointerId = null;
     let suppressClick = false;
 
-    const showItem = function (index) {
+    const setTrackPosition = function (offset, animate) {
+      track.style.transition = animate
+        ? 'transform 380ms cubic-bezier(0.22, 1, 0.36, 1)'
+        : 'none';
+      track.style.transform = 'translate3d(' + offset + 'px, 0, 0)';
+    };
+
+    const showItem = function (index, animate) {
       if (!items.length) return;
 
       currentIndex = (index + items.length) % items.length;
@@ -64,12 +74,19 @@
           return itemIndex === currentIndex ? '●' : '○';
         }).join(' ');
       }
+
+      if (isMobile) {
+        setTrackPosition(-currentIndex * carousel.clientWidth, animate !== false);
+      } else {
+        track.style.transition = '';
+        track.style.transform = '';
+      }
     };
 
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
         const step = Number(button.dataset.step);
-        showItem(currentIndex + (Number.isFinite(step) ? step : 0));
+        showItem(currentIndex + (Number.isFinite(step) ? step : 0), true);
       });
     });
 
@@ -79,22 +96,54 @@
       pointerStartX = event.clientX;
       pointerStartY = event.clientY;
       pointerTracking = true;
+      horizontalDrag = false;
+      pointerId = event.pointerId;
+      track.style.transition = 'none';
 
       if (carousel.setPointerCapture) {
         carousel.setPointerCapture(event.pointerId);
       }
     });
 
-    carousel.addEventListener('pointerup', function (event) {
+    carousel.addEventListener('pointermove', function (event) {
       if (!pointerTracking) return;
 
       const deltaX = event.clientX - pointerStartX;
       const deltaY = event.clientY - pointerStartY;
-      pointerTracking = false;
+      if (!horizontalDrag) {
+        if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return;
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+          pointerTracking = false;
+          setTrackPosition(-currentIndex * carousel.clientWidth, true);
+          return;
+        }
+        horizontalDrag = true;
+        suppressClick = true;
+      }
 
-      if (Math.abs(deltaX) < 50 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
-      suppressClick = true;
-      showItem(currentIndex + (deltaX < 0 ? 1 : -1));
+      event.preventDefault();
+      setTrackPosition(-currentIndex * carousel.clientWidth + deltaX, false);
+    });
+
+    const finishPointer = function (event, cancelled) {
+      if (!pointerTracking) return;
+
+      const deltaX = event ? event.clientX - pointerStartX : 0;
+      const threshold = carousel.clientWidth * 0.18;
+      const shouldMove = horizontalDrag && !cancelled && Math.abs(deltaX) >= threshold;
+      const step = shouldMove ? (deltaX < 0 ? 1 : -1) : 0;
+      pointerTracking = false;
+      horizontalDrag = false;
+
+      if (pointerId !== null && carousel.releasePointerCapture) {
+        try { carousel.releasePointerCapture(pointerId); } catch (error) { /* already released */ }
+      }
+      pointerId = null;
+      showItem(currentIndex + step, true);
+    };
+
+    carousel.addEventListener('pointerup', function (event) {
+      finishPointer(event, false);
     });
 
     carousel.addEventListener('click', function (event) {
@@ -105,14 +154,18 @@
     });
 
     carousel.addEventListener('pointercancel', function () {
-      pointerTracking = false;
+      finishPointer(null, true);
     });
 
-    showItem(0);
+    carousel.addEventListener('lostpointercapture', function () {
+      if (pointerTracking) finishPointer(null, true);
+    });
+
+    showItem(0, false);
 
     return {
       reset: function () {
-        showItem(0);
+        showItem(0, false);
       }
     };
   }
