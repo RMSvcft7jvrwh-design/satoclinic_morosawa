@@ -986,6 +986,8 @@ h3 {
   text-align: center;
 }
 
+.staff-intro-break { display: block; }
+
 .staff-row {
   margin-bottom: 88px;
 }
@@ -1832,6 +1834,8 @@ h3 {
     margin-bottom: 36px;
     font-size: 14px;
   }
+
+  .staff-intro-break { display: none; }
 
   .staff-row,
   .staff-row.image-right {
