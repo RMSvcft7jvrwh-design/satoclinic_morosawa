@@ -77,6 +77,12 @@
         if (window.innerWidth > MOBILE_BREAKPOINT) item.setAttribute('open', '');
       });
 
+      if (section.classList.contains('about-detail-staff')) {
+        carousel.style.height = window.innerWidth <= MOBILE_BREAKPOINT
+          ? items[currentIndex].offsetHeight + 'px'
+          : '';
+      }
+
       if (status) {
         status.textContent = items.map(function (_, itemIndex) {
           return itemIndex === currentIndex ? '●' : '○';
@@ -434,7 +440,8 @@
     setupNewsPagination();
     const switchers = [
       setupSwitcher('.medical', '.medical-item'),
-      setupSwitcher('.staff', '.staff-item')
+      setupSwitcher('.staff', '.staff-item'),
+      setupSwitcher('.about-detail-staff', '.about-staff-card')
     ].filter(Boolean);
 
     let wasMobile = window.innerWidth <= MOBILE_BREAKPOINT;
