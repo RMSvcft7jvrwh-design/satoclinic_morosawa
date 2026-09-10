@@ -157,7 +157,22 @@ h3 {
 
 @media (min-width: 768px) {
   .site-header nav ul { gap: 28px; }
-  .site-header nav a { font-size: 16px; }
+  .site-header nav a {
+    display: inline-block;
+    font-size: 16px;
+    transform: scale(1);
+    transform-origin: center;
+    transition: transform .2s ease-out;
+  }
+
+  .site-header nav a:hover,
+  .site-header nav a:focus-visible {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header nav a { transition: none; }
 }
 
 .header-hours:hover,
@@ -219,10 +234,10 @@ h3 {
 .hero h1::before {
   position: absolute;
   z-index: -1;
-  top: calc(50% + 5px);
+  top: calc(50% + 8px);
   left: 50%;
   width: min(720px, 94%);
-  height: .38em;
+  height: .33em;
   content: "";
   background: rgba(0, 0, 0, var(--hero-copy-overlay-opacity));
   clip-path: polygon(7% 0, 100% 0, 97.5% 100%, 3.5% 100%);
@@ -1223,8 +1238,8 @@ h3 {
 
   .hero h1::before {
     width: calc(100% - 20px);
-    height: .38em;
-    top: calc(50% + 4px);
+    height: .33em;
+    top: calc(50% + 7px);
   }
 
   .hours { padding: 48px 0 56px; }
