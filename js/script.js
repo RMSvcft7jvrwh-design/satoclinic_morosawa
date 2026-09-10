@@ -2,6 +2,7 @@
   'use strict';
 
   const MOBILE_BREAKPOINT = 767;
+  const HEADER_MENU_BREAKPOINT = 1349;
 
   function setupMenu() {
     const toggle = document.querySelector('.menu-toggle');
@@ -21,6 +22,14 @@
 
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && header.classList.contains('menu-open')) closeMenu();
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > HEADER_MENU_BREAKPOINT) closeMenu();
     });
   }
 

@@ -155,7 +155,7 @@ h3 {
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1350px) {
   .site-header nav ul { gap: 28px; }
   .site-header nav a {
     display: inline-block;
@@ -173,6 +173,106 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .site-header nav a { transition: none; }
+}
+
+@media (min-width: 768px) and (max-width: 1349px) {
+  .site-header {
+    gap: 16px;
+    padding: 18px 38px 16px;
+  }
+
+  .site-header nav {
+    position: absolute;
+    top: 100%;
+    right: 38px;
+    left: auto;
+    display: none;
+    width: min(360px, calc(100vw - 76px));
+    padding: 10px;
+    border: 1px solid rgba(101, 168, 158, .42);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .96);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-header.menu-open nav { display: block; }
+
+  .site-header nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+  }
+
+  .site-header nav li + li { border-top: 1px solid rgba(101, 168, 158, .28); }
+
+  .site-header nav a {
+    display: block;
+    padding: 10px 12px;
+    color: var(--green);
+    font-size: 16px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+    white-space: nowrap;
+  }
+
+  .site-header nav a:hover,
+  .site-header nav a:focus-visible { color: var(--green); }
+
+  .menu-toggle {
+    display: flex;
+    order: 3;
+    flex: 0 0 42px;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .42);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .menu-toggle span:not(.sr-only) {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+  }
+
+  .menu-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .site-header.menu-open .menu-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .site-header.menu-open .menu-toggle span:nth-child(2) { opacity: 0; }
+  .site-header.menu-open .menu-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .header-actions {
+    order: 2;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .header-hours { display: none; }
+
+  .header-phone {
+    min-height: 34px;
+    padding: 6px 11px;
+    font-size: 12px;
+  }
+
+  .header-phone::before {
+    content: "☎";
+    font-size: 14px;
+  }
+
+  .header-action-detail,
+  .header-phone strong { display: none; }
 }
 
 .header-hours:hover,
