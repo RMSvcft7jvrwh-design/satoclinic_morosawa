@@ -866,7 +866,6 @@ h3 {
 
 .patient-carousel-track { display: contents; }
 .patient-carousel-clone { display: none !important; }
-.patient-carousel-dots { display: none; }
 
 .news {
   padding: 88px 0 112px;
@@ -1461,32 +1460,32 @@ h3 {
   .patient-carousel-track {
     display: flex;
     align-items: flex-start;
-    width: 100%;
+    width: 500%;
     will-change: transform;
   }
 
   .patient-carousel-track > .patient-carousel-clone { display: block !important; }
 
+  .patient-gallery.is-ready .patient-carousel-track {
+    transform: translate3d(-20%, 0, 0);
+    animation: patient-gallery-flow 28s linear infinite;
+  }
+
+  .patient-gallery.is-paused .patient-carousel-track {
+    animation-play-state: paused;
+  }
+
   .patient-gallery img {
-    flex: 0 0 100%;
+    flex: 0 0 20%;
     height: 220px;
     border-radius: 22px;
+    pointer-events: none;
+    user-select: none;
   }
 
-  .patient-carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .patient-carousel-dots button {
-    padding: 0 3px;
-    border: 0;
-    color: var(--green);
-    background: transparent;
-    font-size: 16px;
-    line-height: 1;
+  @keyframes patient-gallery-flow {
+    from { transform: translate3d(-20%, 0, 0); }
+    to { transform: translate3d(-80%, 0, 0); }
   }
 
   .news { padding: 56px 0 64px; }
@@ -2175,4 +2174,10 @@ h3 {
 
   .back-to-top { margin-bottom: 28px; }
   .site-footer { height: 68px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .patient-gallery.is-ready .patient-carousel-track {
+    animation: none;
+  }
 }

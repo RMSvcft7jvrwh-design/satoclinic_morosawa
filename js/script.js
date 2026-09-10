@@ -441,17 +441,38 @@
     if (!carousel || !track) return;
 
     const items = Array.from(track.querySelectorAll('img'));
-    const dots = Array.from(carousel.querySelectorAll('[data-patient-slide]'));
-    if (items.length < 2 || !dots.length) return;
+    if (items.length < 2) return;
 
     const cloneSlide = function (item) {
       const clone = item.cloneNode(true);
       clone.classList.add('patient-carousel-clone');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.alt = '';
       return clone;
     };
 
     track.insertBefore(cloneSlide(items[items.length - 1]), track.firstChild);
     track.appendChild(cloneSlide(items[0]));
+
+    carousel.classList.add('is-ready');
+    const updateAnimationState = function (isVisible) {
+      carousel.classList.toggle('is-paused', !isVisible || document.hidden);
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        updateAnimationState(entries[0].isIntersecting);
+      }, { threshold: 0.1 });
+      observer.observe(carousel);
+    } else {
+      updateAnimationState(true);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      updateAnimationState(!document.hidden);
+    });
+
+    return;
 
     let currentIndex = 0;
     let pointerStartX = 0;
