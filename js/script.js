@@ -216,8 +216,89 @@
     };
   }
 
+  function setupNewsPagination() {
+    const newsPage = document.querySelector('.news-detail');
+    if (!newsPage) return;
+
+    const articles = Array.from(newsPage.querySelectorAll('.news-article'));
+    const pagination = newsPage.querySelector('.news-pagination');
+    if (!articles.length || !pagination) return;
+
+    const pageSize = 10;
+    const pageCount = Math.ceil(articles.length / pageSize);
+    const pageNumbers = pagination.querySelector('[data-news-pages]');
+    const previousButton = pagination.querySelector('[data-news-prev]');
+    const nextButton = pagination.querySelector('[data-news-next]');
+    let currentPage = 0;
+
+    function getHashArticle() {
+      const id = window.location.hash.slice(1);
+      return id ? articles.find(function (article) { return article.id === id; }) : null;
+    }
+
+    function renderPage(pageIndex, shouldScroll) {
+      currentPage = Math.max(0, Math.min(pageIndex, pageCount - 1));
+      const start = currentPage * pageSize;
+      const end = start + pageSize;
+      const target = getHashArticle();
+
+      articles.forEach(function (article, index) {
+        article.hidden = index < start || index >= end;
+        article.open = article === target && !article.hidden;
+      });
+
+      pageNumbers.replaceChildren();
+      for (let index = 0; index < pageCount; index += 1) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(index + 1);
+        button.setAttribute('aria-label', 'お知らせ ' + (index + 1) + 'ページ');
+        if (index === currentPage) {
+          button.setAttribute('aria-current', 'page');
+          button.classList.add('is-current');
+        }
+        button.addEventListener('click', function () {
+          renderPage(index, true);
+        });
+        pageNumbers.appendChild(button);
+      }
+
+      previousButton.disabled = currentPage === 0;
+      nextButton.disabled = currentPage === pageCount - 1;
+      pagination.hidden = pageCount <= 1;
+
+      if (shouldScroll) {
+        newsPage.scrollIntoView({ block: 'start' });
+      }
+    }
+
+    previousButton.addEventListener('click', function () {
+      if (currentPage > 0) renderPage(currentPage - 1, true);
+    });
+
+    nextButton.addEventListener('click', function () {
+      if (currentPage < pageCount - 1) renderPage(currentPage + 1, true);
+    });
+
+    function renderHashTarget() {
+      const target = getHashArticle();
+      const targetIndex = target ? articles.indexOf(target) : 0;
+      renderPage(Math.floor(targetIndex / pageSize), false);
+      if (target && !target.hidden) {
+        target.open = true;
+        window.requestAnimationFrame(function () {
+          target.scrollIntoView({ block: 'start' });
+        });
+      }
+    }
+
+    renderHashTarget();
+    window.addEventListener('hashchange', renderHashTarget);
+  }
+
   function init() {
     setupMenu();
+    setupNewsPagination();
     const switchers = [
       setupSwitcher('.medical', '.medical-item'),
       setupSwitcher('.staff', '.staff-item')

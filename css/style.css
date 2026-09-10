@@ -668,13 +668,26 @@ h3 {
 }
 
 .news-detail-list a {
-  display: block;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 18px;
   padding: 20px 24px;
   border-bottom: 1px solid rgba(101, 168, 158, .45);
   color: var(--green);
   background: rgba(255, 255, 255, .84);
   font-size: 18px;
   font-weight: 700;
+}
+
+.news-detail-list time,
+.news-list time,
+.news-article summary time {
+  color: var(--green-bright);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  white-space: nowrap;
 }
 
 .news-detail-list a::after {
@@ -695,24 +708,90 @@ h3 {
 
 .news-article {
   scroll-margin-top: 120px;
-  padding: 34px 38px 38px;
+  padding: 0;
   border: 1px solid rgba(101, 168, 158, .55);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 10px 24px rgba(37, 111, 102, .08);
 }
 
-.news-article h3 {
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--line);
-  font-size: 25px;
+.news-article summary {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 18px;
+  padding: 25px 30px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.news-article summary::-webkit-details-marker { display: none; }
+
+.news-article summary::after {
+  color: var(--green);
+  content: "+";
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.news-article[open] summary::after { content: "−"; }
+
+.news-article summary h3 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 23px;
+  line-height: 1.5;
 }
 
 .news-article p {
-  margin: 0;
+  margin: 0 30px;
+  padding: 24px 0 30px;
+  border-top: 1px solid var(--line);
   font-size: 17px;
   line-height: 2;
+}
+
+.news-article[hidden] { display: none; }
+
+.news-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 48px;
+}
+
+.news-pagination[hidden] { display: none; }
+
+.news-pagination button {
+  min-width: 42px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  color: var(--green);
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.news-pagination button:hover,
+.news-pagination button:focus-visible,
+.news-pagination button.is-current {
+  color: #fff;
+  background: var(--green);
+}
+
+.news-pagination button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.news-page-numbers {
+  display: flex;
+  gap: 8px;
 }
 
 .hours {
@@ -817,7 +896,9 @@ h3 {
 
 .news-list li { border-bottom: 1.5px solid var(--line); }
 .news-list a {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
   padding: 22px 0 17px;
   font-size: 22px;
   font-weight: 700;
@@ -906,6 +987,8 @@ h3 {
   line-height: 1.9;
   text-align: center;
 }
+
+.news-list a span { min-width: 0; }
 
 .medical-row,
 .staff-row {
@@ -1398,9 +1481,16 @@ h3 {
   }
 
   .news-list a {
+    align-items: flex-start;
+    gap: 4px;
+    flex-direction: column;
     padding: 13px 0 11px;
     font-size: 15px;
   }
+
+  .news-list time,
+  .news-detail-list time,
+  .news-article summary time { font-size: 12px; }
 
   .news-button {
     float: none;
@@ -1631,10 +1721,14 @@ h3 {
 
   .news-detail-list { margin-bottom: 48px; }
   .news-detail-list a {
+    grid-template-columns: 1fr auto;
+    gap: 4px 10px;
     padding: 17px 16px;
     font-size: 15px;
     line-height: 1.7;
   }
+
+  .news-detail-list a time { grid-column: 1 / -1; }
 
   .news-detail-list a::after { font-size: 19px; }
   .news-articles { gap: 20px; }
@@ -1645,14 +1739,30 @@ h3 {
     border-radius: 16px;
   }
 
-  .news-article h3 {
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    font-size: 20px;
+  .news-article summary {
+    grid-template-columns: 1fr auto;
+    gap: 5px 10px;
+    padding: 19px 17px;
+  }
+
+  .news-article summary time { grid-column: 1 / -1; }
+
+  .news-article summary h3 {
+    font-size: 18px;
     line-height: 1.5;
   }
 
-  .news-article p { font-size: 15px; line-height: 1.9; }
+  .news-article p {
+    margin: 0 17px;
+    padding: 20px 0 24px;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .news-pagination {
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
 
   .medical { padding: 56px 0 72px; }
   .medical > .content > h2 { margin-bottom: 42px; }
