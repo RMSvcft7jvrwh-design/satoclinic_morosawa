@@ -308,6 +308,9 @@ h3 {
   gap: 44px;
 }
 
+.medical-detail-list.medical-carousel { display: grid; }
+.medical-detail-list.medical-carousel .carousel-track { display: contents; }
+
 .medical-detail-card {
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
@@ -1578,8 +1581,25 @@ h3 {
 
   .medical-detail-list { gap: 24px; }
 
+  .medical-detail-list.medical-carousel {
+    display: block;
+    gap: 0;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .medical-detail-list.medical-carousel .carousel-track {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    will-change: transform;
+  }
+
   .medical-detail-card {
     display: block;
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
     padding: 16px 16px 24px;
     border-radius: 18px;
   }

@@ -53,7 +53,13 @@
       <section class="medical-detail section-block" aria-labelledby="medical-detail-heading">
         <div class="content wide">
           <h2 id="medical-detail-heading">診療内容のご案内</h2>
-          <div class="medical-detail-list">
+          <div class="mobile-switcher" aria-label="診療内容の切り替え">
+            <button type="button" data-step="-1" aria-label="前の診療内容">‹</button>
+            <span class="mobile-switcher-status" aria-live="polite">● ○ ○ ○ ○ ○ ○</span>
+            <button type="button" data-step="1" aria-label="次の診療内容">›</button>
+          </div>
+          <div class="medical-detail-list medical-carousel">
+            <div class="carousel-track">
             <article class="medical-detail-card" id="medical-1">
               <img src="./assets/Medical_Image/medical_5.jpg" alt="一般内科の診療風景" loading="lazy">
               <div class="medical-detail-card-body">
@@ -103,6 +109,7 @@
                 <p>禁煙をご希望の方に、禁煙治療とサポートを行っています。必要に応じて、ニコチン依存症の治療薬を使用し、無理なく禁煙が継続できるようお手伝いいたします。</p>
               </div>
             </article>
+            </div>
           </div>
         </div>
       </section>

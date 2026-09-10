@@ -77,7 +77,7 @@
         if (window.innerWidth > MOBILE_BREAKPOINT) item.setAttribute('open', '');
       });
 
-      if (section.classList.contains('about-detail-staff')) {
+      if (section.classList.contains('about-detail-staff') || section.classList.contains('medical-detail')) {
         carousel.style.height = window.innerWidth <= MOBILE_BREAKPOINT
           ? items[currentIndex].offsetHeight + 'px'
           : '';
@@ -662,7 +662,8 @@
     const switchers = [
       setupSwitcher('.medical', '.medical-item'),
       setupSwitcher('.staff', '.staff-item'),
-      setupSwitcher('.about-detail-staff', '.about-staff-card')
+      setupSwitcher('.about-detail-staff', '.about-staff-card'),
+      setupSwitcher('.medical-detail', '.medical-detail-card')
     ].filter(Boolean);
 
     let wasMobile = window.innerWidth <= MOBILE_BREAKPOINT;
