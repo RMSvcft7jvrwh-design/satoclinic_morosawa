@@ -62,9 +62,7 @@
         const isActive = itemIndex === currentIndex;
         item.classList.toggle('is-active', isActive);
 
-        if (isMobile) {
-          item.toggleAttribute('open', isActive);
-        } else {
+        if (!isMobile) {
           item.setAttribute('open', '');
         }
       });

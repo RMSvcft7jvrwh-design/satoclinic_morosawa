@@ -1673,15 +1673,7 @@ h3 {
 
   .medical-item > summary,
   .staff-item > summary {
-    display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) 20px;
-    gap: 12px;
-    align-items: center;
-    min-height: 86px;
-    padding: 10px 12px;
-    color: var(--green);
-    cursor: pointer;
-    list-style: none;
+    display: none;
   }
 
   .medical-item > summary::-webkit-details-marker,
@@ -1735,11 +1727,11 @@ h3 {
     white-space: nowrap;
   }
 
-  .medical-item:not([open]) > .medical-row,
-  .staff-item:not([open]) > .staff-row { display: none; }
-
-  .medical-item[open] > .medical-row,
-  .staff-item[open] > .staff-row { padding: 0 12px 16px; }
+  .medical-item > .medical-row,
+  .staff-item > .staff-row {
+    display: flex;
+    padding: 0 12px 16px;
+  }
 
   .staff-item summary img[src*="sato_taro.jpg"] { object-position: 75% center; }
   .staff-item summary img[src*="suzuki_mari.jpg"] { object-position: right center; }
