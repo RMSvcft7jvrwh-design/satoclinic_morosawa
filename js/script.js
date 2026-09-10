@@ -452,36 +452,90 @@
     const items = Array.from(track.querySelectorAll('img'));
     if (items.length < 2) return;
 
-    const cloneSlide = function (item) {
-      const clone = item.cloneNode(true);
-      clone.classList.add('patient-carousel-clone');
-      clone.setAttribute('aria-hidden', 'true');
-      clone.alt = '';
-      return clone;
+    {
+    let currentIndex = 0;
+    let isInViewport = false;
+    let slideshowTimer = null;
+
+    const isMobile = function () {
+      return window.innerWidth <= MOBILE_BREAKPOINT;
     };
 
-    track.insertBefore(cloneSlide(items[items.length - 1]), track.firstChild);
-    track.appendChild(cloneSlide(items[0]));
+    const reducedMotion = function () {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    };
+
+    const clearSlideshowTimer = function () {
+      if (slideshowTimer !== null) {
+        window.clearTimeout(slideshowTimer);
+        slideshowTimer = null;
+      }
+    };
+
+    const showItem = function (index, animate) {
+      currentIndex = (index + items.length) % items.length;
+      items.forEach(function (item, itemIndex) {
+        item.classList.toggle('is-visible', itemIndex === currentIndex);
+        item.classList.toggle('is-fading', itemIndex === currentIndex && animate && !reducedMotion());
+      });
+    };
+
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleMotionPreference = function () {
+      if (motionPreference.matches) {
+        clearSlideshowTimer();
+        showItem(0, false);
+      } else {
+        scheduleSlideshow();
+      }
+    };
+
+    if (motionPreference.addEventListener) {
+      motionPreference.addEventListener('change', handleMotionPreference);
+    }
+
+    const scheduleSlideshow = function () {
+      clearSlideshowTimer();
+      if (!isMobile() || !isInViewport || document.hidden || reducedMotion()) return;
+      slideshowTimer = window.setTimeout(function () {
+        const nextIndex = (currentIndex + 1) % items.length;
+        const nextImage = items[nextIndex];
+        const continueTransition = function () {
+          if (!isMobile() || !isInViewport || document.hidden || reducedMotion()) return;
+          showItem(nextIndex, true);
+          scheduleSlideshow();
+        };
+
+        if (nextImage.complete) continueTransition();
+        else nextImage.addEventListener('load', continueTransition, { once: true });
+      }, 6000);
+    };
+
+    const updateVisibility = function (isVisible) {
+      isInViewport = isVisible;
+      if (isVisible) scheduleSlideshow();
+      else clearSlideshowTimer();
+    };
 
     carousel.classList.add('is-ready');
-    const updateAnimationState = function (isVisible) {
-      carousel.classList.toggle('is-paused', !isVisible || document.hidden);
-    };
+    showItem(0, false);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(function (entries) {
-        updateAnimationState(entries[0].isIntersecting);
+        updateVisibility(entries[0].isIntersecting);
       }, { threshold: 0.1 });
       observer.observe(carousel);
     } else {
-      updateAnimationState(true);
+      updateVisibility(true);
     }
 
     document.addEventListener('visibilitychange', function () {
-      updateAnimationState(!document.hidden);
+      if (document.hidden) clearSlideshowTimer();
+      else scheduleSlideshow();
     });
 
     return;
+    }
 
     let currentIndex = 0;
     let pointerStartX = 0;
