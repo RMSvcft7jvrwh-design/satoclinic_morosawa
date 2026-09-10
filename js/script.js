@@ -161,7 +161,16 @@
       if (pointerTracking) finishPointer(null, true);
     });
 
-    showItem(0, false);
+    const hashIndex = items.findIndex(function (item) {
+      return item.id === window.location.hash.slice(1) || item.dataset.card === window.location.hash.slice(1);
+    });
+    showItem(hashIndex >= 0 ? hashIndex : 0, false);
+    if (hashIndex >= 0) {
+      window.requestAnimationFrame(function () {
+        const target = document.getElementById(window.location.hash.slice(1));
+        if (target) target.scrollIntoView({ block: 'start' });
+      });
+    }
 
     return {
       reset: function () {
