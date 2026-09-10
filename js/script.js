@@ -7,7 +7,6 @@
     const toggle = document.querySelector('.menu-toggle');
     const header = document.querySelector('.site-header');
     const nav = header ? header.querySelector('nav') : null;
-
     if (!toggle || !header || !nav) return;
 
     const closeMenu = function () {
@@ -35,6 +34,19 @@
     const track = carousel ? carousel.querySelector('.carousel-track') : null;
     if (!items.length || !switcher || !carousel || !track) return null;
 
+    const cloneSlide = function (item) {
+      const clone = item.cloneNode(true);
+      clone.classList.add('carousel-clone');
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach(function (element) {
+        element.removeAttribute('id');
+      });
+      return clone;
+    };
+
+    track.insertBefore(cloneSlide(items[items.length - 1]), track.firstChild);
+    track.appendChild(cloneSlide(items[0]));
+
     const status = switcher.querySelector('.mobile-switcher-status');
     const buttons = switcher.querySelectorAll('button[data-step]');
     let currentIndex = 0;
@@ -44,6 +56,11 @@
     let horizontalDrag = false;
     let pointerId = null;
     let suppressClick = false;
+    let isSnapping = false;
+
+    const getBaseOffset = function (index) {
+      return -(index + 1) * carousel.clientWidth;
+    };
 
     const setTrackPosition = function (offset, animate) {
       track.style.transition = animate
@@ -52,19 +69,12 @@
       track.style.transform = 'translate3d(' + offset + 'px, 0, 0)';
     };
 
-    const showItem = function (index, animate) {
-      if (!items.length) return;
-
+    const updateItemState = function (index) {
       currentIndex = (index + items.length) % items.length;
-      const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
 
       items.forEach(function (item, itemIndex) {
-        const isActive = itemIndex === currentIndex;
-        item.classList.toggle('is-active', isActive);
-
-        if (!isMobile) {
-          item.setAttribute('open', '');
-        }
+        item.classList.toggle('is-active', itemIndex === currentIndex);
+        if (window.innerWidth > MOBILE_BREAKPOINT) item.setAttribute('open', '');
       });
 
       if (status) {
@@ -72,35 +82,59 @@
           return itemIndex === currentIndex ? '●' : '○';
         }).join(' ');
       }
+    };
 
-      if (isMobile) {
-        setTrackPosition(-currentIndex * carousel.clientWidth, animate !== false);
+    const showItem = function (index, animate) {
+      updateItemState(index);
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        setTrackPosition(getBaseOffset(currentIndex), animate !== false);
       } else {
         track.style.transition = '';
         track.style.transform = '';
       }
     };
 
+    const moveBy = function (step) {
+      if (isSnapping || !step) return;
+
+      const targetIndex = currentIndex + step;
+      const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      if (!isMobile || (targetIndex >= 0 && targetIndex < items.length)) {
+        showItem(targetIndex, true);
+        return;
+      }
+
+      const wrappedIndex = (targetIndex + items.length) % items.length;
+      const clonePosition = targetIndex < 0 ? 0 : items.length + 1;
+      isSnapping = true;
+      updateItemState(wrappedIndex);
+      setTrackPosition(-clonePosition * carousel.clientWidth, true);
+
+      const finishLoop = function (event) {
+        if (event.target !== track || event.propertyName !== 'transform') return;
+        track.removeEventListener('transitionend', finishLoop);
+        setTrackPosition(getBaseOffset(wrappedIndex), false);
+        isSnapping = false;
+      };
+      track.addEventListener('transitionend', finishLoop);
+    };
+
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
         const step = Number(button.dataset.step);
-        showItem(currentIndex + (Number.isFinite(step) ? step : 0), true);
+        moveBy(Number.isFinite(step) ? step : 0);
       });
     });
 
     carousel.addEventListener('pointerdown', function (event) {
-      if (window.innerWidth > MOBILE_BREAKPOINT || event.target.closest('button')) return;
-
+      if (window.innerWidth > MOBILE_BREAKPOINT || event.target.closest('button') || isSnapping) return;
       pointerStartX = event.clientX;
       pointerStartY = event.clientY;
       pointerTracking = true;
       horizontalDrag = false;
       pointerId = event.pointerId;
       track.style.transition = 'none';
-
-      if (carousel.setPointerCapture) {
-        carousel.setPointerCapture(event.pointerId);
-      }
+      if (carousel.setPointerCapture) carousel.setPointerCapture(event.pointerId);
     });
 
     carousel.addEventListener('pointermove', function (event) {
@@ -112,7 +146,7 @@
         if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return;
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
           pointerTracking = false;
-          setTrackPosition(-currentIndex * carousel.clientWidth, true);
+          setTrackPosition(getBaseOffset(currentIndex), true);
           return;
         }
         horizontalDrag = true;
@@ -120,7 +154,7 @@
       }
 
       event.preventDefault();
-      setTrackPosition(-currentIndex * carousel.clientWidth + deltaX, false);
+      setTrackPosition(getBaseOffset(currentIndex) + deltaX, false);
     });
 
     const finishPointer = function (event, cancelled) {
@@ -128,16 +162,19 @@
 
       const deltaX = event ? event.clientX - pointerStartX : 0;
       const threshold = carousel.clientWidth * 0.18;
-      const shouldMove = horizontalDrag && !cancelled && Math.abs(deltaX) >= threshold;
-      const step = shouldMove ? (deltaX < 0 ? 1 : -1) : 0;
+      const step = horizontalDrag && !cancelled && Math.abs(deltaX) >= threshold
+        ? (deltaX < 0 ? 1 : -1)
+        : 0;
+
       pointerTracking = false;
       horizontalDrag = false;
-
       if (pointerId !== null && carousel.releasePointerCapture) {
         try { carousel.releasePointerCapture(pointerId); } catch (error) { /* already released */ }
       }
       pointerId = null;
-      showItem(currentIndex + step, true);
+
+      if (step) moveBy(step);
+      else showItem(currentIndex, true);
     };
 
     carousel.addEventListener('pointerup', function (event) {
@@ -159,19 +196,21 @@
       if (pointerTracking) finishPointer(null, true);
     });
 
+    const hash = window.location.hash.slice(1);
     const hashIndex = items.findIndex(function (item) {
-      return item.id === window.location.hash.slice(1) || item.dataset.card === window.location.hash.slice(1);
+      return item.id === hash || item.dataset.card === hash;
     });
     showItem(hashIndex >= 0 ? hashIndex : 0, false);
     if (hashIndex >= 0) {
       window.requestAnimationFrame(function () {
-        const target = document.getElementById(window.location.hash.slice(1));
+        const target = document.getElementById(hash);
         if (target) target.scrollIntoView({ block: 'start' });
       });
     }
 
     return {
       reset: function () {
+        isSnapping = false;
         showItem(0, false);
       }
     };
@@ -179,7 +218,6 @@
 
   function init() {
     setupMenu();
-
     const switchers = [
       setupSwitcher('.medical', '.medical-item'),
       setupSwitcher('.staff', '.staff-item')

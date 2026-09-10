@@ -906,6 +906,8 @@ h3 {
   display: contents;
 }
 
+.carousel-clone { display: none !important; }
+
 .medical-more {
   margin-top: 28px;
   text-align: center;
@@ -1622,6 +1624,8 @@ h3 {
     width: 100%;
     will-change: transform;
   }
+
+  .carousel-track > .carousel-clone { display: block !important; }
 
   .mobile-switcher {
     display: flex;
