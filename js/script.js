@@ -435,9 +435,230 @@
     window.addEventListener('hashchange', renderHashTarget);
   }
 
+  function setupPatientCarousel() {
+    const carousel = document.querySelector('.patient-gallery');
+    const track = carousel ? carousel.querySelector('.patient-carousel-track') : null;
+    if (!carousel || !track) return;
+
+    const items = Array.from(track.querySelectorAll('img'));
+    const dots = Array.from(carousel.querySelectorAll('[data-patient-slide]'));
+    if (items.length < 2 || !dots.length) return;
+
+    const cloneSlide = function (item) {
+      const clone = item.cloneNode(true);
+      clone.classList.add('patient-carousel-clone');
+      return clone;
+    };
+
+    track.insertBefore(cloneSlide(items[items.length - 1]), track.firstChild);
+    track.appendChild(cloneSlide(items[0]));
+
+    let currentIndex = 0;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerId = null;
+    let pointerTracking = false;
+    let horizontalDrag = false;
+    let dragDeltaX = 0;
+    let isSnapping = false;
+    let isInViewport = false;
+    let autoplayTimer = null;
+
+    const reducedMotion = function () {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    };
+
+    const isMobile = function () {
+      return window.innerWidth <= MOBILE_BREAKPOINT;
+    };
+
+    const baseOffset = function (index) {
+      return -(index + 1) * carousel.clientWidth;
+    };
+
+    const setTrackPosition = function (offset, animate) {
+      track.style.transition = animate && !reducedMotion()
+        ? 'transform 380ms cubic-bezier(0.22, 1, 0.36, 1)'
+        : 'none';
+      track.style.transform = isMobile()
+        ? 'translate3d(' + offset + 'px, 0, 0)'
+        : '';
+    };
+
+    const updateDots = function () {
+      dots.forEach(function (dot, index) {
+        const selected = index === currentIndex;
+        dot.textContent = selected ? '●' : '○';
+        dot.setAttribute('aria-current', selected ? 'true' : 'false');
+      });
+    };
+
+    const clearAutoplay = function () {
+      if (autoplayTimer !== null) {
+        window.clearTimeout(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    const scheduleAutoplay = function (delay) {
+      clearAutoplay();
+      if (!isMobile() || !isInViewport || document.hidden || reducedMotion()) return;
+      autoplayTimer = window.setTimeout(function () {
+        autoplayTimer = null;
+        if (isMobile() && isInViewport && !document.hidden && !isSnapping) moveBy(1);
+      }, delay || 5000);
+    };
+
+    const showItem = function (index, animate) {
+      currentIndex = (index + items.length) % items.length;
+      updateDots();
+      if (isMobile()) setTrackPosition(baseOffset(currentIndex), animate !== false);
+      else {
+        track.style.transition = '';
+        track.style.transform = '';
+      }
+    };
+
+    const moveBy = function (step) {
+      if (isSnapping || !step || !isMobile()) return;
+
+      const targetIndex = currentIndex + step;
+      if (targetIndex >= 0 && targetIndex < items.length) {
+        showItem(targetIndex, true);
+        scheduleAutoplay();
+        return;
+      }
+
+      const wrappedIndex = (targetIndex + items.length) % items.length;
+      const clonePosition = targetIndex < 0 ? 0 : items.length + 1;
+      isSnapping = true;
+      currentIndex = wrappedIndex;
+      updateDots();
+      setTrackPosition(-clonePosition * carousel.clientWidth, true);
+
+      if (reducedMotion()) {
+        setTrackPosition(baseOffset(wrappedIndex), false);
+        isSnapping = false;
+        return;
+      }
+
+      const finishLoop = function (event) {
+        if (event.target !== track || event.propertyName !== 'transform') return;
+        track.removeEventListener('transitionend', finishLoop);
+        setTrackPosition(baseOffset(wrappedIndex), false);
+        isSnapping = false;
+        scheduleAutoplay();
+      };
+      track.addEventListener('transitionend', finishLoop);
+    };
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        if (!isMobile() || isSnapping) return;
+        clearAutoplay();
+        showItem(Number(dot.dataset.patientSlide), true);
+        scheduleAutoplay(1800);
+      });
+    });
+
+    carousel.addEventListener('pointerdown', function (event) {
+      if (!isMobile() || isSnapping || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      pointerId = event.pointerId;
+      pointerTracking = true;
+      horizontalDrag = false;
+      dragDeltaX = 0;
+      clearAutoplay();
+      track.style.transition = 'none';
+      if (carousel.setPointerCapture) carousel.setPointerCapture(pointerId);
+    });
+
+    carousel.addEventListener('pointermove', function (event) {
+      if (!pointerTracking) return;
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+
+      if (!horizontalDrag) {
+        if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return;
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+          pointerTracking = false;
+          setTrackPosition(baseOffset(currentIndex), true);
+          scheduleAutoplay(1800);
+          return;
+        }
+        horizontalDrag = true;
+      }
+
+      event.preventDefault();
+      dragDeltaX = deltaX;
+      setTrackPosition(baseOffset(currentIndex) + deltaX, false);
+    });
+
+    const finishPointer = function (event, cancelled) {
+      if (!pointerTracking) return;
+      const deltaX = event ? event.clientX - pointerStartX : dragDeltaX;
+      const threshold = carousel.clientWidth * 0.18;
+      const step = horizontalDrag && !cancelled && Math.abs(deltaX) >= threshold
+        ? (deltaX < 0 ? 1 : -1)
+        : 0;
+
+      pointerTracking = false;
+      horizontalDrag = false;
+      if (pointerId !== null && carousel.releasePointerCapture) {
+        try { carousel.releasePointerCapture(pointerId); } catch (error) { /* already released */ }
+      }
+      pointerId = null;
+      if (step) moveBy(step);
+      else {
+        showItem(currentIndex, true);
+        scheduleAutoplay(1800);
+      }
+      dragDeltaX = 0;
+    };
+
+    carousel.addEventListener('pointerup', function (event) { finishPointer(event, false); });
+    carousel.addEventListener('pointercancel', function () { finishPointer(null, true); });
+    carousel.addEventListener('lostpointercapture', function () {
+      if (pointerTracking) finishPointer(null, true);
+    });
+
+    const updateVisibility = function (visible) {
+      isInViewport = visible;
+      if (visible) scheduleAutoplay();
+      else clearAutoplay();
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        updateVisibility(entries[0].isIntersecting);
+      }, { threshold: 0.1 });
+      observer.observe(carousel);
+    } else {
+      updateVisibility(true);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) clearAutoplay();
+      else scheduleAutoplay();
+    });
+
+    window.addEventListener('resize', function () {
+      if (isMobile()) showItem(currentIndex, false);
+      else {
+        clearAutoplay();
+        track.style.transition = '';
+        track.style.transform = '';
+      }
+    });
+
+    showItem(0, false);
+  }
+
   function init() {
     setupMenu();
     setupNewsPagination();
+    setupPatientCarousel();
     const switchers = [
       setupSwitcher('.medical', '.medical-item'),
       setupSwitcher('.staff', '.staff-item'),
