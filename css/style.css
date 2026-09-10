@@ -841,8 +841,13 @@ h3 {
   border-bottom: 0;
 }
 
-.hours-table tr > :first-child { width: 160px; }
-.hours-table tbody th { font-weight: 600; }
+.hours-table tr > :first-child { width: 190px; }
+.hours-table tbody th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hours-time span + span { margin-left: 10px; }
 .hours-table td { font-size: 21px; }
 .hours-table td.is-open { color: var(--green); font-weight: 700; }
 .hours-table td.is-closed { color: #9aa8a5; }
@@ -1416,7 +1421,7 @@ h3 {
   }
 
   .hours-table tbody tr {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: 72px repeat(7, minmax(0, 1fr));
     overflow: hidden;
     border: 1px solid rgba(101, 168, 158, .35);
     border-radius: 12px;
@@ -1424,9 +1429,21 @@ h3 {
   }
 
   .hours-table tbody tr th {
-    grid-column: 1 / -1;
     background: var(--section-tint);
   }
+
+  .hours-table tbody tr > :first-child {
+    width: auto;
+    white-space: normal;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .hours-time span {
+    display: block;
+  }
+
+  .hours-time span + span { margin-left: 0; }
 
   .hours-table th,
   .hours-table td {
