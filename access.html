@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="佐藤医院の診療時間、所在地、診療科目をご案内します。">
+  <title>診療時間・所在地 | 佐藤医院</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html#top" aria-label="佐藤医院 トップへ">
+      <img src="./assets/Logo/logo.png" alt="佐藤医院 Sato Clinic">
+    </a>
+    <nav aria-label="メインナビゲーション">
+      <ul>
+        <li><a href="./index.html#top">トップ</a></li>
+        <li><a href="./news.html">お知らせ</a></li>
+        <li><a href="./medical.html">診療内容</a></li>
+        <li><a href="./about.html">当院について</a></li>
+        <li><a href="./about.html#staff">スタッフ紹介</a></li>
+        <li><a href="./access.html">所在地</a></li>
+        <li><a href="./faq.html">よくあるご質問</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle" type="button" aria-expanded="false">
+      <span></span><span></span><span></span>
+      <span class="sr-only">Menu</span>
+    </button>
+    <div class="header-actions">
+      <a class="header-hours" href="./access.html#hours" aria-label="診療時間へ">
+        <span class="header-action-label">診療時間</span>
+        <span class="header-action-detail">午前 9:00〜12:00<br>午後 13:00〜18:00</span>
+      </a>
+      <a class="header-phone" href="tel:00-0000-0000">
+        <span class="header-action-label">電話</span>
+        <strong>00-0000-0000</strong>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="subpage-hero" aria-labelledby="access-page-title">
+      <div class="subpage-hero-shade"></div>
+      <h1 id="access-page-title">診療時間・所在地</h1>
+    </section>
+
+    <div class="patterned-content">
+      <section class="hours section-block" id="hours" aria-labelledby="hours-title">
+        <div class="content narrow">
+          <h2 id="hours-title">診療時間</h2>
+          <div class="hours-table-wrap">
+            <table class="hours-table">
+              <thead>
+                <tr><th>時間帯</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th></tr>
+              </thead>
+              <tbody>
+                <tr><th>午前　9:00〜12:00</th><td class="is-open">●</td><td class="is-open">●</td><td class="is-open">●</td><td class="is-closed">／</td><td class="is-open">●</td><td class="is-open">●</td><td class="is-closed">／</td></tr>
+                <tr><th>午後　13:00〜18:00</th><td class="is-open">●</td><td class="is-open">●</td><td class="is-open">●</td><td class="is-closed">／</td><td class="is-open">●</td><td class="is-closed">／</td><td class="is-closed">／</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="hours-notes">
+            <p>●＝診療　／＝休診</p>
+            <ul>
+              <li>受付時間：午前　8:00〜11:00　／　午後　12:00〜17:00</li>
+              <li>休診日：木曜・土曜午後・日曜</li>
+              <li>※祝祭日も診療を行っておりますが、休診日もございますので、事前にご確認ください。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="access section-block" id="access" aria-labelledby="access-title">
+        <div class="access-card content medium">
+          <h2 id="access-title">所在地</h2>
+          <div class="access-grid">
+            <iframe class="access-map" src="https://www.google.com/maps?q=東京都台東区上野0-0-0&amp;output=embed" title="佐藤医院の所在地（東京都台東区上野0-0-0）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="access-copy">
+              <div><h3>所在地</h3><ul><li>〒123-4567　東京都台東区上野0-0-0</li><li>最寄駅：JR上野駅より徒歩5分</li><li>当院専用の無料駐車場 10台分あり</li></ul></div>
+              <div><h3>お問い合わせ</h3><ul><li>電話番号：00-0000-0000</li><li>FAX：00-0000-0000</li><li>メール：info@sato-clinic-test.jp</li></ul></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="departments section-block" aria-labelledby="departments-title">
+        <div class="content narrow">
+          <h2 id="departments-title">診療科目</h2>
+          <p class="department-list">内科<br>循環器科<br>呼吸器科<br>予防医療・健康診断<br>生活習慣病（高血圧、糖尿病等）の治療・管理</p>
+          <p class="contact-note">その他、ご不明点があればお電話またはメールでお問い合わせください。</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="back-to-top"><a class="outline-button" href="./index.html#top">トップページへ戻る</a></div>
+  <footer class="site-footer"><small>© 佐藤医院</small></footer>
+  <script src="./js/script.js" defer></script>
+</body>
+</html>

@@ -519,6 +519,13 @@ h3 {
 
 .about-staff-card h3 { margin: 0; font-size: 20px; }
 
+.about-staff-card ul {
+  margin: 16px 0 0;
+  padding-left: 1.25em;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
 .faq-detail { padding: 112px 0 128px; }
 
 .faq-detail > .content > h2 { margin-bottom: 26px; }
@@ -1005,6 +1012,37 @@ h3 {
 .staff-row ul { padding-left: 1.35em; font-size: 16px; }
 .staff-row.image-right > div:first-child { padding-left: 90px; }
 .staff-row.last { margin-bottom: 0; }
+
+.staff-carousel .staff-row { margin-bottom: 24px; }
+
+.staff-carousel .staff-row p {
+  margin: 0;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 112px;
+  min-height: 42px;
+  width: max-content;
+  margin: 0 auto 24px;
+  padding: 9px 16px;
+  border: 1px solid var(--green-bright);
+  border-radius: 6px;
+  color: var(--green);
+  background: rgba(255, 255, 255, .58);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.staff-more:hover,
+.staff-more:focus-visible { background: var(--section-tint); }
 
 .access {
   padding: 104px 0 120px;
